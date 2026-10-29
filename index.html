@@ -2,101 +2,182 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FitFlow — Тренировки</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#6c5ce7">
+<title>FitFlow Pro — Тренировки</title>
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+<canvas id="confettiCanvas"></canvas>
 <div class="bg-layer" id="bgLayer"></div>
 <div class="bg-orbs">
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
 </div>
+<div class="grain"></div>
 
 <header class="topbar glass">
-  <div class="logo">⚡ FitFlow</div>
+  <div class="logo">⚡ FitFlow<span class="pro">PRO</span></div>
   <div class="top-actions">
+    <button class="icon-btn glass-btn" id="statsBtn" title="Статистика">📊</button>
+    <button class="icon-btn glass-btn" id="achievementsBtn" title="Достижения">🏅</button>
+    <button class="icon-btn glass-btn" id="soundBtn" title="Звук">🔊</button>
     <button class="icon-btn glass-btn" id="settingsBtn" title="Настройки">⚙️</button>
     <button class="icon-btn glass-btn" id="themeBtn" title="Сменить тему">🌙</button>
   </div>
 </header>
 
 <main class="container">
-  <!-- Экран выбора уровня -->
   <section class="screen active" id="levelScreen">
+    <div class="streak-badge glass" id="streakBadge" title="Дней подряд">
+      🔥 <span id="streakCount">0</span> дней
+    </div>
+    <div class="xp-bar glass">
+      <div class="xp-info">
+        <span>Уровень <b id="userLevel">1</b></span>
+        <span id="xpText">0 / 100 XP</span>
+      </div>
+      <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+    </div>
+
     <h1 class="hero-title">Выбери <span>уровень</span></h1>
-    <p class="hero-sub">Тренировка подстроится под тебя</p>
+    <p class="hero-sub" id="motivationQuote">«Ты сильнее, чем думаешь»</p>
+
     <div class="levels">
       <div class="level-card glass" data-level="easy">
         <div class="level-emoji">🌱</div>
         <h3>Лёгкий</h3>
         <p>Для новичков</p>
+        <div class="level-glow"></div>
       </div>
       <div class="level-card glass" data-level="medium">
         <div class="level-emoji">🔥</div>
         <h3>Средний</h3>
         <p>Для уверенных</p>
+        <div class="level-glow"></div>
       </div>
       <div class="level-card glass" data-level="hard">
         <div class="level-emoji">💎</div>
         <h3>Сложный</h3>
         <p>Для профи</p>
+        <div class="level-glow"></div>
       </div>
       <div class="level-card glass" data-level="insane">
         <div class="level-emoji">👑</div>
         <h3>Безумный</h3>
         <p>Только для героев</p>
+        <div class="level-glow"></div>
       </div>
     </div>
+
     <div class="rounds-box glass">
       <label>Количество занятий:</label>
-      <input type="number" id="roundsInput" min="1" max="20" value="3">
+      <div class="stepper">
+        <button class="stepper-btn" id="roundsMinus">−</button>
+        <input type="number" id="roundsInput" min="1" max="20" value="3">
+        <button class="stepper-btn" id="roundsPlus">+</button>
+      </div>
     </div>
-    <button class="start-btn" id="startBtn">Начать тренировку</button>
+
+    <div class="quick-rounds glass">
+      <button class="quick-btn" data-rounds="1">1</button>
+      <button class="quick-btn active" data-rounds="3">3</button>
+      <button class="quick-btn" data-rounds="5">5</button>
+      <button class="quick-btn" data-rounds="10">10</button>
+    </div>
+
+    <button class="start-btn" id="startBtn">Начать тренировку ⚡</button>
   </section>
 
-  <!-- Экран тренировки -->
   <section class="screen" id="workoutScreen">
     <div class="progress-bar glass"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="workout-info glass">
-      <div class="round-counter" id="roundCounter">Занятие 1 / 3</div>
-      <div class="exercise-name" id="exerciseName">Отжимания</div>
-      <div class="exercise-count" id="exerciseCount">15</div>
-      <div class="timer-display" id="timerDisplay">00:00</div>
-      <div class="phase-label" id="phaseLabel">Выполняй упражнение</div>
+    <div class="workout-grid">
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 200 200">
+          <circle class="ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="ring-fill" id="ringFill" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ring-center">
+          <div class="timer-display" id="timerDisplay">00:00</div>
+          <div class="ring-label">ТАЙМЕР</div>
+        </div>
+      </div>
+      <div class="workout-info glass">
+        <div class="round-counter" id="roundCounter">Занятие 1 / 3</div>
+        <div class="exercise-emoji" id="exerciseEmoji">💪</div>
+        <div class="exercise-name" id="exerciseName">Отжимания</div>
+        <div class="exercise-count" id="exerciseCount">15</div>
+        <div class="exercise-meta">
+          <span id="phaseLabel">Выполняй упражнение</span>
+          <span class="calories">~<span id="calories">5</span> ккал</span>
+        </div>
+      </div>
     </div>
     <div class="workout-actions">
-      <button class="big-btn done-btn" id="doneBtn">Готово ✓</button>
+      <button class="big-btn done-btn" id="doneBtn">Готово ✓ <span class="hotkey">Space</span></button>
+      <button class="big-btn ghost-btn" id="pauseBtn">⏸ Пауза</button>
     </div>
   </section>
 
-  <!-- Экран отдыха -->
+  <section class="screen" id="countdownScreen">
+    <div class="countdown-num" id="countdownNum">3</div>
+    <div class="countdown-text">Приготовься...</div>
+  </section>
+
   <section class="screen" id="restScreen">
     <div class="rest-card glass">
-      <h2>Отдых</h2>
-      <div class="rest-timer" id="restTimer">30</div>
+      <h2>Отдых 😮‍💨</h2>
+      <div class="rest-ring-wrap">
+        <svg class="ring" viewBox="0 0 200 200">
+          <circle class="ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="ring-fill rest" id="restRingFill" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ring-center">
+          <div class="rest-timer" id="restTimer">30</div>
+        </div>
+      </div>
       <div class="rest-sub">Секунд до следующего упражнения</div>
-      <button class="big-btn skip-btn" id="skipBtn">Пропустить →</button>
+      <div class="rest-actions">
+        <button class="big-btn skip-btn" id="skipBtn">Пропустить →</button>
+        <button class="big-btn ghost-btn" id="addRestBtn">+15 сек</button>
+      </div>
     </div>
   </section>
 
-  <!-- Экран завершения -->
   <section class="screen" id="finishScreen">
     <div class="finish-card glass">
       <div class="finish-emoji">🎉</div>
       <h2>Тренировка завершена!</h2>
-      <p>Ты сделал все занятия. Отличная работа!</p>
-      <button class="start-btn" id="restartBtn">Ещё раз</button>
+      <div class="finish-stats">
+        <div class="finish-stat">
+          <div class="fs-num" id="finishRounds">3</div>
+          <div class="fs-label">занятий</div>
+        </div>
+        <div class="finish-stat">
+          <div class="fs-num" id="finishExercises">15</div>
+          <div class="fs-label">упражнений</div>
+        </div>
+        <div class="finish-stat">
+          <div class="fs-num" id="finishCalories">45</div>
+          <div class="fs-label">ккал</div>
+        </div>
+        <div class="finish-stat">
+          <div class="fs-num" id="finishXp">+30</div>
+          <div class="fs-label">XP</div>
+        </div>
+      </div>
+      <p class="finish-msg" id="finishMsg">Ты сделал все занятия. Отличная работа!</p>
+      <button class="start-btn" id="restartBtn">Ещё раз 🔄</button>
     </div>
   </section>
 </main>
 
-<!-- Модальное окно настроек -->
 <div class="modal-overlay" id="settingsModal">
   <div class="modal glass">
-    <h3>Настройки</h3>
+    <h3>⚙️ Настройки</h3>
     <div class="setting-row">
       <label>Длительность отдыха (сек)</label>
       <input type="number" id="restDurationInput" min="5" max="300" value="30">
@@ -108,9 +189,63 @@
         <button class="theme-option" data-theme="dark">🌙 Тёмная</button>
       </div>
     </div>
+    <div class="setting-row">
+      <label>Авто-пауза после простоя</label>
+      <button class="toggle-btn active" id="autoPauseToggle"></button>
+    </div>
+    <div class="setting-row">
+      <label>Обратный отсчёт 3-2-1</label>
+      <button class="toggle-btn active" id="countdownToggle"></button>
+    </div>
+    <div class="setting-row">
+      <label>Вибрация</label>
+      <button class="toggle-btn active" id="vibrationToggle"></button>
+    </div>
+    <div class="setting-row">
+      <label>Авто-старт следующего упражнения</label>
+      <button class="toggle-btn" id="autoStartToggle"></button>
+    </div>
     <button class="big-btn" id="closeSettings">Сохранить</button>
   </div>
 </div>
+
+<div class="modal-overlay" id="statsModal">
+  <div class="modal glass wide">
+    <h3>📊 Статистика</h3>
+    <div class="stats-grid">
+      <div class="stat-tile">
+        <div class="st-num" id="statTotalWorkouts">0</div>
+        <div class="st-label">Тренировок</div>
+      </div>
+      <div class="stat-tile">
+        <div class="st-num" id="statTotalExercises">0</div>
+        <div class="st-label">Упражнений</div>
+      </div>
+      <div class="stat-tile">
+        <div class="st-num" id="statTotalCalories">0</div>
+        <div class="st-label">Ккал сожжено</div>
+      </div>
+      <div class="stat-tile">
+        <div class="st-num" id="statTotalTime">0м</div>
+        <div class="st-label">Время тренировок</div>
+      </div>
+    </div>
+    <h4>Последние 7 тренировок</h4>
+    <div class="history-list" id="historyList"></div>
+    <button class="big-btn ghost-btn" id="resetStatsBtn">Сбросить статистику</button>
+    <button class="big-btn" id="closeStats">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="achievementsModal">
+  <div class="modal glass wide">
+    <h3>🏅 Достижения</h3>
+    <div class="achievements-list" id="achievementsList"></div>
+    <button class="big-btn" id="closeAchievements">Закрыть</button>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <script src="script.js"></script>
 </body>
