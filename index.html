@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitFlow — Тренировки</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<header class="topbar glass">
+  <div class="logo">⚡ FitFlow</div>
+  <div class="top-actions">
+    <button class="icon-btn glass-btn" id="settingsBtn" title="Настройки">⚙️</button>
+    <button class="icon-btn glass-btn" id="themeBtn" title="Сменить тему">🌙</button>
+  </div>
+</header>
+
+<main class="container">
+  <!-- Экран выбора уровня -->
+  <section class="screen active" id="levelScreen">
+    <h1 class="hero-title">Выбери <span>уровень</span></h1>
+    <p class="hero-sub">Тренировка подстроится под тебя</p>
+    <div class="levels">
+      <div class="level-card glass" data-level="easy">
+        <div class="level-emoji">🌱</div>
+        <h3>Лёгкий</h3>
+        <p>Для новичков</p>
+      </div>
+      <div class="level-card glass" data-level="medium">
+        <div class="level-emoji">🔥</div>
+        <h3>Средний</h3>
+        <p>Для уверенных</p>
+      </div>
+      <div class="level-card glass" data-level="hard">
+        <div class="level-emoji">💎</div>
+        <h3>Сложный</h3>
+        <p>Для профи</p>
+      </div>
+      <div class="level-card glass" data-level="insane">
+        <div class="level-emoji">👑</div>
+        <h3>Безумный</h3>
+        <p>Только для героев</p>
+      </div>
+    </div>
+    <div class="rounds-box glass">
+      <label>Количество занятий:</label>
+      <input type="number" id="roundsInput" min="1" max="20" value="3">
+    </div>
+    <button class="start-btn" id="startBtn">Начать тренировку</button>
+  </section>
+
+  <!-- Экран тренировки -->
+  <section class="screen" id="workoutScreen">
+    <div class="progress-bar glass"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="workout-info glass">
+      <div class="round-counter" id="roundCounter">Занятие 1 / 3</div>
+      <div class="exercise-name" id="exerciseName">Отжимания</div>
+      <div class="exercise-count" id="exerciseCount">15</div>
+      <div class="timer-display" id="timerDisplay">00:00</div>
+      <div class="phase-label" id="phaseLabel">Выполняй упражнение</div>
+    </div>
+    <div class="workout-actions">
+      <button class="big-btn done-btn" id="doneBtn">Готово ✓</button>
+    </div>
+  </section>
+
+  <!-- Экран отдыха -->
+  <section class="screen" id="restScreen">
+    <div class="rest-card glass">
+      <h2>Отдых</h2>
+      <div class="rest-timer" id="restTimer">30</div>
+      <div class="rest-sub">Секунд до следующего упражнения</div>
+      <button class="big-btn skip-btn" id="skipBtn">Пропустить →</button>
+    </div>
+  </section>
+
+  <!-- Экран завершения -->
+  <section class="screen" id="finishScreen">
+    <div class="finish-card glass">
+      <div class="finish-emoji">🎉</div>
+      <h2>Тренировка завершена!</h2>
+      <p>Ты сделал все занятия. Отличная работа!</p>
+      <button class="start-btn" id="restartBtn">Ещё раз</button>
+    </div>
+  </section>
+</main>
+
+<!-- Модальное окно настроек -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal glass">
+    <h3>Настройки</h3>
+    <div class="setting-row">
+      <label>Длительность отдыха (сек)</label>
+      <input type="number" id="restDurationInput" min="5" max="300" value="30">
+    </div>
+    <div class="setting-row">
+      <label>Тема</label>
+      <div class="theme-toggle">
+        <button class="theme-option active" data-theme="light">☀️ Светлая</button>
+        <button class="theme-option" data-theme="dark">🌙 Тёмная</button>
+      </div>
+    </div>
+    <button class="big-btn" id="closeSettings">Сохранить</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
